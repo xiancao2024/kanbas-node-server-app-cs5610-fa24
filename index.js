@@ -57,8 +57,6 @@ app.use(session(sessionOptions));
 
 app.use(express.json());
 
-///////////////////////////////////////////////////
-
 Lab5(app);
 HelloRoutes(app);
 UserRoutes(app);
