@@ -1,22 +1,45 @@
-import express from 'express';
-import session from "express-session";
+// const express = require('express')
+import express from "express";
+import mongoose from "mongoose";
 import "dotenv/config";
-import Hello from "./Hello.js"
+import HelloRoutes from "./hello.js";
 import Lab5 from "./Lab5/index.js";
+import UserRoutes from "./Kanbas/Users/routes.js";
 import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
-import UserRoutes from "./Kanbas/Users/routes.js";
-import EnrollmentRoutes from "./Kanbas/Enrollments/route.js";
 import cors from "cors";
+import session from "express-session";
+import EnrollmentsRoutes from "./Kanbas/Enrollments/routes.js";
+
+console.log("Environment Variables:", process.env.MONGO_CONNECTION_STRING);
+
+const CONNECTION_STRING =
+  process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas";
+mongoose.connect(CONNECTION_STRING);
+
 const app = express();
-app.use(express.json());
+
 app.use(
-    cors({
-      credentials: true,
-      origin: process.env.NETLIFY_URL || "http://localhost:3000",
-    })
+  cors({
+    credentials: true,
+    origin: function (origin, callback) {
+      const allowedOrigins = [
+        process.env.NETLIFY_URL,
+        "http://localhost:3000",
+        "http://localhost:3001",
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
 );
+
+
+
 const sessionOptions = {
   secret: process.env.SESSION_SECRET || "kanbas",
   resave: false,
@@ -32,13 +55,16 @@ if (process.env.NODE_ENV !== "development") {
 }
 app.use(session(sessionOptions));
 
-EnrollmentRoutes(app);
+app.use(express.json());
+
+///////////////////////////////////////////////////
+
+Lab5(app);
+HelloRoutes(app);
 UserRoutes(app);
 CourseRoutes(app);
 ModuleRoutes(app);
 AssignmentRoutes(app);
-Lab5(app);
-Hello(app);
+EnrollmentsRoutes(app);
+
 app.listen(process.env.PORT || 4000);
-
-
