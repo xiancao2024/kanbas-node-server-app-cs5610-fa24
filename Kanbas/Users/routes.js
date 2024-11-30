@@ -13,15 +13,17 @@ export default function UserRoutes(app) {
     const status = await dao.deleteUser(req.params.userId);
     res.json(status);
   };
+
+
   const findAllUsers = async (req, res) => {
-    const { role, name } = req.query;
+    const { role, userId} = req.query;
     if (role) {
       const users = await dao.findUsersByRole(role);
       res.json(users);
       return;
     }
-    if (name) {
-      const users = await dao.findUsersByPartialName(name);
+    if (userId) {
+      const users = await dao.findUsersByPartialName(userId);
       res.json(users);
       return;
     }
@@ -29,10 +31,14 @@ export default function UserRoutes(app) {
     const users = await dao.findAllUsers();
     res.json(users);
   };
+
   const findUserById = async (req, res) => {
-    const user = await dao.findUserById(req.params.userId);
+    console.log("req.params.userId finsuser by id", req.params.userId);
+    const user = await dao.findUserByUsername(req.params.userId);
+    console.log("user", user);
     res.json(user);
   };
+
 
 
   const updateUser = async (req, res) => {
@@ -48,7 +54,7 @@ export default function UserRoutes(app) {
     res.json(currentUser);
   };
 
-  
+
   const signup = async (req, res) => {
     const user = await dao.findUserByUsername(req.body.username);
     if (user) {

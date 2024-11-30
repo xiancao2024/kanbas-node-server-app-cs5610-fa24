@@ -33,4 +33,4 @@ export const updateUser = (userId, user) =>
   model.updateOne({ username: userId }, { $set: user });
 
 // delete
-export const deleteUser = (userId) => model.deleteOne({ _id: userId });
+export const deleteUser = (userId) => model.deleteOne({ username: userId });
