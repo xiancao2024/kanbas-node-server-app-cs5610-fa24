@@ -2,7 +2,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
-//import HelloRoutes from "./hello.js";
+import HelloRoutes from "./Hello.js";
 import Lab5 from "./Lab5/index.js";
 import UserRoutes from "./Kanbas/Users/routes.js";
 import CourseRoutes from "./Kanbas/Courses/routes.js";
@@ -58,7 +58,7 @@ app.use(session(sessionOptions));
 app.use(express.json());
 
 Lab5(app);
-//HelloRoutes(app);
+HelloRoutes(app);
 UserRoutes(app);
 CourseRoutes(app);
 ModuleRoutes(app);
