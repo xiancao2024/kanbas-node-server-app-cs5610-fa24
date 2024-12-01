@@ -1,8 +1,8 @@
-// const express = require('express')
+
 import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
-import HelloRoutes from "./hello.js";
+//import HelloRoutes from "./hello.js";
 import Lab5 from "./Lab5/index.js";
 import UserRoutes from "./Kanbas/Users/routes.js";
 import CourseRoutes from "./Kanbas/Courses/routes.js";
@@ -15,7 +15,7 @@ import EnrollmentsRoutes from "./Kanbas/Enrollments/routes.js";
 console.log("Environment Variables:", process.env.MONGO_CONNECTION_STRING);
 
 const CONNECTION_STRING =
-  process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas";
+  process.env.MONGO_CONNECTION_STRING || "mongodb://localhost:27017/kanbas";
 mongoose.connect(CONNECTION_STRING);
 
 const app = express();
@@ -27,7 +27,7 @@ app.use(
       const allowedOrigins = [
         process.env.NETLIFY_URL,
         "http://localhost:3000",
-        "http://localhost:3001",
+  
       ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
@@ -58,7 +58,7 @@ app.use(session(sessionOptions));
 app.use(express.json());
 
 Lab5(app);
-HelloRoutes(app);
+//HelloRoutes(app);
 UserRoutes(app);
 CourseRoutes(app);
 ModuleRoutes(app);
