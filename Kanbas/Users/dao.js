@@ -30,7 +30,7 @@ export const findUsersByRole = (role) => model.find({ role: role });
 
 // update
 export const updateUser = (userId, user) =>
-  model.updateOne({ username: userId }, { $set: user });
+  model.updateOne({ _id: userId }, { $set: user });
 
 // delete
 export const deleteUser = (userId) => model.deleteOne({ username: userId });
