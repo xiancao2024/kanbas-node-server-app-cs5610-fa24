@@ -11,7 +11,7 @@ export default function CourseRoutes(app) {
     const currentUser = req.session["currentUser"];
     if (currentUser) {
       await enrollmentsDao.enrollUserInCourse(currentUser._id, course._id);
-    } 
+    }
     res.json(course);
   });
 
@@ -67,15 +67,16 @@ export default function CourseRoutes(app) {
 
   app.delete("/api/courses/:courseId", async (req, res) => {
     const { courseId } = req.params;
-  
+
     try {
       // Delete the course
       const courseStatus = await dao.deleteCourse(courseId);
-  
+
       if (courseStatus.acknowledged && courseStatus.deletedCount > 0) {
         // If the course was successfully deleted, delete related enrollments
-        const enrollmentsStatus = await enrollmentsDao.deleteEnrollmentsByCourse(courseId);
-  
+        const enrollmentsStatus =
+          await enrollmentsDao.deleteEnrollmentsByCourse(courseId);
+
         res.send({
           message: "Course and associated enrollments deleted successfully",
           courseStatus,
@@ -86,7 +87,9 @@ export default function CourseRoutes(app) {
       }
     } catch (error) {
       console.error("Error deleting course and enrollments:", error);
-      res.status(500).send({ error: "Failed to delete course and enrollments" });
+      res
+        .status(500)
+        .send({ error: "Failed to delete course and enrollments" });
     }
   });
 
